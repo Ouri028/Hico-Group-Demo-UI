@@ -1,17 +1,14 @@
 import * as React from "react";
-import { useState } from "react";
 import Box from "@mui/material/Box";
 import { DataGrid } from "@mui/x-data-grid";
 
 export default function DataGridComponent(props) {
-  const [employeeList, setEmployeeList] = useState([]);
-  setEmployeeList(props.employeeList);
   const columns = [
-    { field: "employeeCode", headerName: "Employee #", width: 90 },
+    { field: "employeeCode", headerName: "Employee #", width: 200 },
     {
       field: "firstName",
       headerName: "First Name(s)",
-      width: 150,
+      width: 250,
       editable: false,
     },
     {
@@ -35,9 +32,9 @@ export default function DataGridComponent(props) {
   ];
 
   return (
-    <Box sx={{ height: 400, width: "100%" }}>
+    <Box sx={{ height: 600, width: "100%" }}>
       <DataGrid
-        rows={employeeList}
+        rows={props.employeeList}
         columns={columns}
         pageSize={5}
         rowsPerPageOptions={[10]}

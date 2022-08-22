@@ -11,10 +11,12 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { fireError } from "../components/Alerts";
 import { login } from "../utils/Auth";
+import { useHistory } from "react-router-dom";
 
 const theme = createTheme();
 
 export default function Login() {
+  const history = useHistory();
   const [getUsername, setUsername] = useState("");
   const [getPassword, setPassword] = useState("");
   const handleSubmit = (event) => event.preventDefault();
@@ -93,7 +95,13 @@ export default function Login() {
                     username: getUsername,
                     password: getPassword,
                   })
-                    .then((res) => console.log(res))
+                    .then((res) => {
+                      if (res && res.token && res.user)
+                        return history.push("/");
+                      else {
+                        fireError("Invalid username and/or password.");
+                      }
+                    })
                     .catch((err) => fireError(err.message, true));
                 }}
               >

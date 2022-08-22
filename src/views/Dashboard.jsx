@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import MuiDrawer from "@mui/material/Drawer";
@@ -18,8 +18,12 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
+import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import DataGridComponent from "../components/DataGridComponent";
+import Tooltip from "@mui/material/Tooltip";
+import { logout, logged } from "../utils/Auth";
+import { useHistory } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -81,10 +85,29 @@ const mainListItems = (
 );
 
 function DashboardContent() {
+  const history = useHistory();
+  useEffect(() => {
+    if (!logged()) return history.push("/login");
+  });
   const [open, setOpen] = useState(true);
+
   const toggleDrawer = () => {
     setOpen(!open);
   };
+  const testData = [
+    {
+      id: 2,
+      firstName: "Sylvester Michael",
+      lastName: "Stephenson",
+      salutation: "MR",
+      gender: "MALE",
+      employeeCode: 128694,
+      grossSalary: 4400000,
+      profileColor: "BLUE",
+      createdAt: "2022-08-18T10:38:24.000+00:00",
+      updatedAt: "2022-08-18T10:38:24.000+00:00",
+    },
+  ];
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -117,6 +140,11 @@ function DashboardContent() {
             >
               Dashboard
             </Typography>
+            <IconButton color="inherit" onClick={() => logout(history)}>
+              <Tooltip title="Logout">
+                <LogoutRoundedIcon />
+              </Tooltip>
+            </IconButton>
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>
@@ -151,8 +179,10 @@ function DashboardContent() {
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
               <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
-                  <DataGridComponent />
+                <Paper
+                  sx={{ p: 0.5, display: "flex", flexDirection: "column" }}
+                >
+                  <DataGridComponent employeeList={testData} />
                 </Paper>
               </Grid>
             </Grid>

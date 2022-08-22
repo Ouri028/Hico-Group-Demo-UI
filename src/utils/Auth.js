@@ -10,8 +10,9 @@ export async function login(username, password) {
   return apiResult;
 }
 
-export function logout() {
-  return clearUserData();
+export function logout(history) {
+  clearUserData();
+  return history.push("/login");
 }
 
 export function userData() {
