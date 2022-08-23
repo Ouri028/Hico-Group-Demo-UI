@@ -10,6 +10,7 @@ specifiers:
   '@mui/x-data-grid': 5.15.3
   react: 18.2.0
   react-dom: 18.2.0
+  react-number-format: ^4.9.3
   react-router-dom: 5.2.0
   react-scripts: 5.0.1
   sweetalert2: 11.4.29
@@ -26,6 +27,7 @@ dependencies:
   '@mui/x-data-grid': 5.15.3_o44fsaa2hsyqzmglwqkm2cyuy4
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
+  react-number-format: 4.9.3_biqbaboplfbrettd7655fr4n2y
   react-router-dom: 5.2.0_react@18.2.0
   react-scripts: 5.0.1_react@18.2.0
   sweetalert2: 11.4.29
@@ -8287,6 +8289,17 @@ packages:
 
   /react-is/18.2.0:
     resolution: {integrity: sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==}
+    dev: false
+
+  /react-number-format/4.9.3_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-am1A1xYAbENuKJ+zpM7V+B1oRTSeOHYltqVKExznIVFweBzhLmOBmyb1DfIKjHo90E0bo1p3nzVJ2NgS5xh+sQ==}
+    peerDependencies:
+      react: ^0.14 || ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^0.14 || ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      prop-types: 15.8.1
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
     dev: false
 
   /react-refresh/0.11.0:

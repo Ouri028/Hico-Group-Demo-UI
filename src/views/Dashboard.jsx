@@ -22,8 +22,10 @@ import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import DataGridComponent from "../components/DataGridComponent";
 import Tooltip from "@mui/material/Tooltip";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { logout, logged } from "../utils/Auth";
 import { useHistory } from "react-router-dom";
+import EmployeeFormComponent from "../components/EmployeeFormComponent";
 
 const drawerWidth = 240;
 
@@ -90,10 +92,20 @@ function DashboardContent() {
     if (!logged()) return history.push("/login");
   });
   const [open, setOpen] = useState(true);
+  const [formOpen, setFormOpen] = useState(false);
 
   const toggleDrawer = () => {
     setOpen(!open);
   };
+
+  const openEmployeeForm = () => {
+    setFormOpen(true);
+  };
+
+  const closeEmplyeeForm = () => {
+    setFormOpen(false);
+  };
+
   const testData = [
     {
       id: 2,
@@ -102,7 +114,7 @@ function DashboardContent() {
       salutation: "MR",
       gender: "MALE",
       employeeCode: 128694,
-      grossSalary: 4400000,
+      grossSalary: 44000,
       profileColor: "BLUE",
       createdAt: "2022-08-18T10:38:24.000+00:00",
       updatedAt: "2022-08-18T10:38:24.000+00:00",
@@ -182,7 +194,27 @@ function DashboardContent() {
                 <Paper
                   sx={{ p: 0.5, display: "flex", flexDirection: "column" }}
                 >
+                  <Tooltip title="Add Employee">
+                    <IconButton
+                      style={{
+                        borderRadius: "10px",
+                        width: "10%",
+                        marginLeft: "auto",
+                      }}
+                      onClick={() => openEmployeeForm()}
+                    >
+                      <PersonAddIcon style={{ color: "#1d548b" }} />
+                    </IconButton>
+                  </Tooltip>
                   <DataGridComponent employeeList={testData} />
+                </Paper>
+              </Grid>
+              <Grid item xs={12}>
+                <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
+                  <EmployeeFormComponent
+                    formOpen={formOpen}
+                    handleFormClose={closeEmplyeeForm}
+                  />
                 </Paper>
               </Grid>
             </Grid>
