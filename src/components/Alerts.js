@@ -20,11 +20,11 @@ export function fireSuccess(message, isAlert) {
   });
 }
 
-export function fireError(message, isAlert) {
+export function fireError(message) {
   MySwal.fire({
     icon: "error",
     title: message,
-    toast: isAlert ? false : true,
+    toast: true,
     ...config,
   });
 }

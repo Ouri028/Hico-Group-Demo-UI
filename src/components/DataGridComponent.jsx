@@ -39,6 +39,10 @@ export default function DataGridComponent(props) {
         pageSize={5}
         rowsPerPageOptions={[10]}
         disableSelectionOnClick
+        onRowClick={(data) => {
+          props.selectedEmployee(data.row);
+          props.formOpen(true);
+        }}
       />
     </Box>
   );

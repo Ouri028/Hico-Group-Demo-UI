@@ -25,6 +25,7 @@ import Tooltip from "@mui/material/Tooltip";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { logout, logged } from "../utils/Auth";
 import { useHistory } from "react-router-dom";
+import { getAllEmployees } from "../utils/Api";
 import EmployeeFormComponent from "../components/EmployeeFormComponent";
 
 const drawerWidth = 240;
@@ -88,11 +89,10 @@ const mainListItems = (
 
 function DashboardContent() {
   const history = useHistory();
-  useEffect(() => {
-    if (!logged()) return history.push("/login");
-  });
   const [open, setOpen] = useState(true);
   const [formOpen, setFormOpen] = useState(false);
+  const [employeeList, setEmployeeList] = useState("");
+  const [selectedEmployee, setSelectedEmployee] = useState("");
 
   const toggleDrawer = () => {
     setOpen(!open);
@@ -102,24 +102,22 @@ function DashboardContent() {
     setFormOpen(true);
   };
 
-  const closeEmplyeeForm = () => {
+  const closeEmployeeForm = () => {
     setFormOpen(false);
   };
 
-  const testData = [
-    {
-      id: 2,
-      firstName: "Sylvester Michael",
-      lastName: "Stephenson",
-      salutation: "MR",
-      gender: "MALE",
-      employeeCode: 128694,
-      grossSalary: 44000,
-      profileColor: "BLUE",
-      createdAt: "2022-08-18T10:38:24.000+00:00",
-      updatedAt: "2022-08-18T10:38:24.000+00:00",
-    },
-  ];
+  const refreshDataComponent = async () => {
+    const data = await getAllEmployees();
+    if (data && data.length > 0) setEmployeeList(data);
+  };
+
+  useEffect(() => {
+    if (!logged()) return history.push("/login");
+    async function init() {
+      await refreshDataComponent();
+    }
+    init();
+  }, []);
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -206,15 +204,25 @@ function DashboardContent() {
                       <PersonAddIcon style={{ color: "#1d548b" }} />
                     </IconButton>
                   </Tooltip>
-                  <DataGridComponent employeeList={testData} />
+                  <DataGridComponent
+                    employeeList={employeeList}
+                    selectedEmployee={(value) => setSelectedEmployee(value)}
+                    formOpen={(value) => setFormOpen(value)}
+                  />
                 </Paper>
               </Grid>
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
-                  <EmployeeFormComponent
-                    formOpen={formOpen}
-                    handleFormClose={closeEmplyeeForm}
-                  />
+                  {formOpen ? (
+                    <EmployeeFormComponent
+                      formOpen={formOpen}
+                      handleFormClose={closeEmployeeForm}
+                      refresh={async (value) =>
+                        value ? await refreshDataComponent() : null
+                      }
+                      selectedEmployee={selectedEmployee}
+                    />
+                  ) : null}
                 </Paper>
               </Grid>
             </Grid>

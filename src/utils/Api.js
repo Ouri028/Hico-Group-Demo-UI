@@ -8,19 +8,15 @@ const API_URL = "http://localhost:5000/api";
  *
  */
 
-const headers = () => {
-  let headers = {
+function headers() {
+  return {
     "Content-Type": "application/json",
+    "x-access-token": getToken(),
   };
-  const token = getToken();
-  if (token) {
-    headers["X-Access-Token"] = token;
-  }
-  return headers;
-};
+}
 
 function handleError(error) {
-  return fireError(error.message, true);
+  return fireError(error.message);
 }
 
 async function Get(url) {
@@ -66,8 +62,8 @@ async function Delete(url) {
  *
  */
 
-export async function getToken() {
-  return await token();
+export function getToken() {
+  return token();
 }
 
 export async function verifyToken(token) {

@@ -16,7 +16,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import NumberFormat from "react-number-format";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function EmployeeFormComponent(props) {
   const [firstName, setFirstName] = useState("");
@@ -41,6 +41,8 @@ export default function EmployeeFormComponent(props) {
       grossSalary: parseInt(grossSalary),
       profileColor: profileColor,
     };
+    if (props.selectedEmployee && props.selectedEmployee.id)
+      data.id = props.selectedEmployee.id;
     console.log(data);
   };
 
@@ -78,6 +80,20 @@ export default function EmployeeFormComponent(props) {
     setSalutation("");
   };
 
+  const setEmployeeFieldValues = (data) => {
+    setFirstName(data.firstName);
+    setLastName(data.lastName);
+    setGender(data.gender);
+    setProfileColor(data.profileColor);
+    setGrossSalary(data.grossSalary);
+    setEmployeeCode(data.employeeCode);
+    setSalutation(data.salutation);
+  };
+
+  useEffect(() => {
+    setEmployeeFieldValues(props.selectedEmployee);
+  }, [props.formOpen, props.selectedEmployee]);
+
   return (
     <Dialog
       fullWidth
@@ -100,6 +116,7 @@ export default function EmployeeFormComponent(props) {
             <TextField
               required
               id="firstName"
+              value={firstName}
               name="firstName"
               label="First name(s)"
               fullWidth
@@ -124,6 +141,7 @@ export default function EmployeeFormComponent(props) {
               required
               id="lastName"
               name="lastName"
+              value={lastName}
               label="Last name"
               fullWidth
               autoComplete="family-name"
@@ -135,6 +153,7 @@ export default function EmployeeFormComponent(props) {
             <NumberFormat
               required
               id="grossSalary"
+              value={grossSalary}
               name="grossSalary"
               label="Gross Salary $PY"
               fullWidth
@@ -156,6 +175,7 @@ export default function EmployeeFormComponent(props) {
                   name: "salutation",
                   id: "uncontrolled-native",
                 }}
+                value={salutation}
               >
                 <option value="DR">Dr</option>
                 <option value="MR">Mr</option>
@@ -168,6 +188,7 @@ export default function EmployeeFormComponent(props) {
           <Grid item xs={12} sm={6}>
             <TextField
               required
+              value={profileColor}
               id="profileColor"
               name="profileColor"
               label="Employee Profile Color"
@@ -212,6 +233,7 @@ export default function EmployeeFormComponent(props) {
               name="employeeCode"
               label="Employee #"
               fullWidth
+              value={employeeCode}
               autoComplete="family-name"
               variant="standard"
               onChange={(value) => handleChange(value, setEmployeeCode)}

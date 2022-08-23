@@ -102,7 +102,7 @@ export default function Login() {
                         fireError("Invalid username and/or password.");
                       }
                     })
-                    .catch((err) => fireError(err.message, true));
+                    .catch((err) => fireError(err.message));
                 }}
               >
                 Login
