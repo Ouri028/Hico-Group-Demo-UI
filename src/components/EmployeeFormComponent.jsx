@@ -16,22 +16,27 @@ import CloseIcon from "@mui/icons-material/Close";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import NumberFormat from "react-number-format";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import ToggleButton from "@mui/material/ToggleButton";
 import { useState, useEffect } from "react";
+import { createEmployee, updateEmployeeById } from "../utils/Api";
 
 export default function EmployeeFormComponent(props) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [gender, setGender] = useState("");
-  const [profileColor, setProfileColor] = useState("");
+  const [profileColor, setProfileColor] = useState("DEFAULT");
   const [grossSalary, setGrossSalary] = useState(0);
   const [employeeCode, setEmployeeCode] = useState(0);
   const [salutation, setSalutation] = useState("");
+  const alphabetic = /^[A-Za-z]+$/;
+  const numeric = /^[0-9]+$/;
 
   const handleChange = (value, callback) => {
     callback(value.target.value);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const data = {
       firstName: firstName,
       lastName: lastName,
@@ -41,9 +46,11 @@ export default function EmployeeFormComponent(props) {
       grossSalary: parseInt(grossSalary),
       profileColor: profileColor,
     };
-    if (props.selectedEmployee && props.selectedEmployee.id)
+    if (props.selectedEmployee && props.selectedEmployee.id) {
       data.id = props.selectedEmployee.id;
-    console.log(data);
+      return await updateEmployeeById(data.id, data);
+    }
+    return await createEmployee(data);
   };
 
   const handleSalutation = (value) => {
@@ -74,7 +81,7 @@ export default function EmployeeFormComponent(props) {
     setFirstName("");
     setLastName("");
     setGender("");
-    setProfileColor("");
+    setProfileColor("DEFAULT");
     setGrossSalary(0);
     setEmployeeCode(0);
     setSalutation("");
@@ -88,6 +95,12 @@ export default function EmployeeFormComponent(props) {
     setGrossSalary(data.grossSalary);
     setEmployeeCode(data.employeeCode);
     setSalutation(data.salutation);
+  };
+
+  const validateRegex = (value, callback, regex) => {
+    if (value.target.value.match(regex) || value.target.value === "") {
+      callback(value.target.value);
+    }
   };
 
   useEffect(() => {
@@ -123,7 +136,9 @@ export default function EmployeeFormComponent(props) {
               fullWidth
               autoComplete="given-name"
               variant="standard"
-              onChange={(value) => handleChange(value, setFirstName)}
+              onChange={(value) =>
+                validateRegex(value, setFirstName, alphabetic)
+              }
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -147,7 +162,9 @@ export default function EmployeeFormComponent(props) {
               fullWidth
               autoComplete="family-name"
               variant="standard"
-              onChange={(value) => handleChange(value, setLastName)}
+              onChange={(value) =>
+                validateRegex(value, setLastName, alphabetic)
+              }
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -187,17 +204,18 @@ export default function EmployeeFormComponent(props) {
             </FormControl>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField
-              required
+            <ToggleButtonGroup
+              color="info"
               value={profileColor}
-              id="profileColor"
-              name="profileColor"
-              label="Employee Profile Color"
-              fullWidth
-              autoComplete="family-name"
-              variant="standard"
+              exclusive
               onChange={(value) => handleChange(value, setProfileColor)}
-            />
+              aria-label="Platform"
+            >
+              <ToggleButton value="RED">Red</ToggleButton>
+              <ToggleButton value="BLUE">Blue</ToggleButton>
+              <ToggleButton value="GREEN">Green</ToggleButton>
+              <ToggleButton value="DEFAULT">Default</ToggleButton>
+            </ToggleButtonGroup>
           </Grid>
           <Grid item xs={12} sm={6}>
             <FormControl>
@@ -237,7 +255,9 @@ export default function EmployeeFormComponent(props) {
               value={employeeCode}
               autoComplete="family-name"
               variant="standard"
-              onChange={(value) => handleChange(value, setEmployeeCode)}
+              onChange={(value) =>
+                validateRegex(value, setEmployeeCode, numeric)
+              }
             />
           </Grid>
           <Grid container spacing={2} item style={{ marginLeft: "auto" }}>
@@ -249,9 +269,22 @@ export default function EmployeeFormComponent(props) {
                     width: "10%",
                     padding: 2,
                     margin: 5,
-                    backgroundColor: "#1d548b",
+                    backgroundColor:
+                      profileColor === "RED"
+                        ? "#cf0000"
+                        : profileColor === "BLUE"
+                        ? "#1d548b"
+                        : profileColor === "GREEN"
+                        ? "#0bd926"
+                        : "#1d548b",
                   }}
-                  onClick={() => handleSubmit()}
+                  onClick={async () => {
+                    handleSubmit();
+                    props.handleFormClose();
+                    props.resetValues();
+                    resetValues();
+                    props.refresh();
+                  }}
                 >
                   <CheckIcon style={{ color: "white" }} />
                 </IconButton>

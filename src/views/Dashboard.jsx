@@ -217,9 +217,7 @@ function DashboardContent() {
                     <EmployeeFormComponent
                       formOpen={formOpen}
                       handleFormClose={closeEmployeeForm}
-                      refresh={async (value) =>
-                        value ? await refreshDataComponent() : null
-                      }
+                      refresh={async () => await refreshDataComponent()}
                       selectedEmployee={selectedEmployee}
                       resetValues={() => setSelectedEmployee("")}
                     />
