@@ -91,7 +91,8 @@ export default function EmployeeFormComponent(props) {
   };
 
   useEffect(() => {
-    setEmployeeFieldValues(props.selectedEmployee);
+    if (props.selectedEmployee && props.selectedEmployee.id)
+      setEmployeeFieldValues(props.selectedEmployee);
   }, [props.formOpen, props.selectedEmployee]);
 
   return (
@@ -264,8 +265,9 @@ export default function EmployeeFormComponent(props) {
                     backgroundColor: "#cf0000",
                   }}
                   onClick={() => {
-                    resetValues();
                     props.handleFormClose();
+                    props.resetValues();
+                    resetValues();
                   }}
                 >
                   <CloseIcon style={{ color: "white" }} />

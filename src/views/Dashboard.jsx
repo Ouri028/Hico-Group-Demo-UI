@@ -221,6 +221,7 @@ function DashboardContent() {
                         value ? await refreshDataComponent() : null
                       }
                       selectedEmployee={selectedEmployee}
+                      resetValues={() => setSelectedEmployee("")}
                     />
                   ) : null}
                 </Paper>
