@@ -211,19 +211,15 @@ function DashboardContent() {
                   />
                 </Paper>
               </Grid>
-              <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
-                  {formOpen ? (
-                    <EmployeeFormComponent
-                      formOpen={formOpen}
-                      handleFormClose={closeEmployeeForm}
-                      refresh={async () => await refreshDataComponent()}
-                      selectedEmployee={selectedEmployee}
-                      resetValues={() => setSelectedEmployee("")}
-                    />
-                  ) : null}
-                </Paper>
-              </Grid>
+              {formOpen ? (
+                <EmployeeFormComponent
+                  formOpen={formOpen}
+                  handleFormClose={closeEmployeeForm}
+                  refresh={async () => await refreshDataComponent()}
+                  selectedEmployee={selectedEmployee}
+                  resetValues={() => setSelectedEmployee("")}
+                />
+              ) : null}
             </Grid>
           </Container>
         </Box>
