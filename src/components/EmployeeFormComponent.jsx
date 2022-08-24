@@ -24,11 +24,11 @@ import { createEmployee, updateEmployeeById } from "../utils/Api";
 export default function EmployeeFormComponent(props) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [gender, setGender] = useState("");
+  const [gender, setGender] = useState("MALE");
   const [profileColor, setProfileColor] = useState("DEFAULT");
   const [grossSalary, setGrossSalary] = useState(0);
   const [employeeCode, setEmployeeCode] = useState(0);
-  const [salutation, setSalutation] = useState("");
+  const [salutation, setSalutation] = useState("DR");
   const alphabetic = /^[A-Za-z]+$/;
   const numeric = /^[0-9]+$/;
 
@@ -80,11 +80,11 @@ export default function EmployeeFormComponent(props) {
   const resetValues = () => {
     setFirstName("");
     setLastName("");
-    setGender("");
+    setGender("MALE");
     setProfileColor("DEFAULT");
     setGrossSalary(0);
     setEmployeeCode(0);
-    setSalutation("");
+    setSalutation("DR");
   };
 
   const setEmployeeFieldValues = (data) => {
